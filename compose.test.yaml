@@ -1,8 +1,7 @@
 services:
   symfony:
     image: kcordes/katiecordescodes-adventofcode-featureflags-symfony
-    environment:
-      APP_ENV: prod
-      APP_DEBUG: 0
+    env_file:
+      - .env.docker
     ports:
       - 8081:80

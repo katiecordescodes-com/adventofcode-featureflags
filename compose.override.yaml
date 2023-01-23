@@ -8,7 +8,7 @@ services:
       - ./var:/var/app/var
       - ./vendor:/var/app/vendor
       - ./.env:/var/app/.env
-      - ./.docker/.unit.conf.json:/docker-entrypoint.d/.unit.conf.json
+      - ./.docker/.unit.conf.json.dev:/docker-entrypoint.d/.unit.conf.json
       - ./composer.json:/var/app/composer.json
       - ./composer.lock:/var/app/composer.lock
       - ./symfony.lock:/var/app/symfony.lock

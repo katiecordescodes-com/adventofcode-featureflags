@@ -22,9 +22,8 @@ COPY --chown=symfony:symfony bin /var/app/bin
 COPY --chown=symfony:symfony config /var/app/config
 COPY --chown=symfony:symfony public /var/app/public
 COPY --chown=symfony:symfony src /var/app/src
-COPY --chown=symfony:symfony var /var/app/var
 COPY --chown=symfony:symfony .env /var/app/.env
 COPY --chown=symfony:symfony composer.json /var/app/composer.json
 
-COPY .docker/.unit.conf.json /docker-entrypoint.d/.unit.conf.json
+COPY .docker/.unit.conf.json.prod /docker-entrypoint.d/.unit.conf.json
 CMD ["unitd", "--no-daemon", "--control", "unix:/var/run/control.unit.sock"]

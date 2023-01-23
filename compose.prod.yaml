@@ -9,7 +9,10 @@ services:
       start_period: 10s
       timeout: 10s
     networks:
-      - katiecordescodes-adventofcode
+      katiecordescodes-adventofcode:
+        aliases:
+          - featureflags
+
 
 networks:
   katiecordescodes-adventofcode:
