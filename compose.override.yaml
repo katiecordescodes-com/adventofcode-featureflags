@@ -1,0 +1,27 @@
+services:
+  symfony:
+    volumes:
+      - ./bin:/var/app/bin
+      - ./config:/var/app/config
+      - ./public:/var/app/public
+      - ./src:/var/app/src
+      - ./var:/var/app/var
+      - ./vendor:/var/app/vendor
+      - ./.env:/var/app/.env
+      - ./.docker/.unit.conf.json:/docker-entrypoint.d/.unit.conf.json
+      - ./composer.json:/var/app/composer.json
+      - ./composer.lock:/var/app/composer.lock
+      - ./symfony.lock:/var/app/symfony.lock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.katiecordescodes-adventofcode-featureflags.rule=Host(`featureflags.adventofcode.katiecordescodes.docker`)"
+      - "traefik.http.routers.katiecordescodes-adventofcode-featureflags.entryPoints=web"
+      - "traefik.http.routers.katiecordescodes-adventofcode-featureflags.service=katiecordescodes-adventofcode-featureflags"
+      - "traefik.http.services.katiecordescodes-adventofcode-featureflags.loadbalancer.server.port=80"
+    networks:
+      - traefik
+      - default
+
+networks:
+  traefik:
+    external: true

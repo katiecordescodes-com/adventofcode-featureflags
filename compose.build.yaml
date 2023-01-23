@@ -1,0 +1,9 @@
+services:
+  symfony:
+    image: kcordes/katiecordescodes-adventofcode-featureflags-symfony
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+    build:
+      context: .
+      dockerfile: .docker/symfony.dockerfile

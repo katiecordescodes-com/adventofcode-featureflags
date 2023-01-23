@@ -1,0 +1,17 @@
+services:
+  symfony:
+    image: kcordes/katiecordescodes-adventofcode-featureflags-symfony
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+    healthcheck:
+      test: curl --fail http://localhost/ping || exit 1
+      interval: 30s
+      start_period: 10s
+      timeout: 10s
+    networks:
+      - katiecordescodes-adventofcode
+
+networks:
+  katiecordescodes-adventofcode:
+    external: true
