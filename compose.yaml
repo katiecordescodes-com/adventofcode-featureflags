@@ -6,3 +6,9 @@ services:
 
   redis:
     image: redis:7.0.8-alpine
+
+  splitio:
+    image: splitsoftware/split-synchronizer
+    environment:
+      SPLIT_SYNC_REDIS_HOST: redis
+      SPLIT_SYNC_REDIS_PORT: 6379
