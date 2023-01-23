@@ -17,6 +17,10 @@ services:
     env_file:
       - .env.docker
 
+  splitio:
+    env_file:
+      - .env.docker
+
 
 networks:
   katiecordescodes-adventofcode:
