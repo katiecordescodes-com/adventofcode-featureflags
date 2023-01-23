@@ -18,6 +18,7 @@ env:
   DOCKER_COMPOSE_FILES_LIST: "compose.yaml,compose.prod.yaml"
   DOCKER_COMPOSE_PROJECT: katiecordescodes-adventofcode-featureflags
   SERVICE_NAME: symfony
+  OTHER_SERVICES: redis splitio
 
 jobs:
   deploy:
@@ -38,8 +39,6 @@ jobs:
         with:
           input: .env.docker.dist
           output: .env.docker
-
-      - run: cat .env.docker >> $GITHUB_OUTPUT
 
       - name: Build the image(s)
         run: docker compose -f compose.build.yaml build
@@ -69,12 +68,13 @@ jobs:
           DOCKER_COMPOSE_PROJECT: ${{ env.DOCKER_COMPOSE_PROJECT }}
           SERVICE_NAME: ${{ env.SERVICE_NAME }}
           DOCKER_COMPOSE_FILES: ${{ env.DOCKER_COMPOSE_FILES }}
+          OTHER_SERVICES: ${{ env.OTHER_SERVICES }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          envs: DEPLOY_PATH,DOCKER_COMPOSE_PROJECT,SERVICE_NAME,DOCKER_COMPOSE_FILES
+          envs: DEPLOY_PATH,DOCKER_COMPOSE_PROJECT,SERVICE_NAME,DOCKER_COMPOSE_FILES,OTHER_SERVICES
           script: |
             cd $DEPLOY_PATH
             chmod +x $DEPLOY_PATH/.deploy/deploy-single.sh
-            $DEPLOY_PATH/.deploy/deploy-single.sh $DOCKER_COMPOSE_PROJECT $SERVICE_NAME "$DOCKER_COMPOSE_FILES"
+            $DEPLOY_PATH/.deploy/deploy-single.sh $DOCKER_COMPOSE_PROJECT $SERVICE_NAME "$DOCKER_COMPOSE_FILES" "$OTHER_SERVICES"
