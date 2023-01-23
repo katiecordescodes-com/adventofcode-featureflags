@@ -1,9 +1,8 @@
 services:
   symfony:
     image: kcordes/katiecordescodes-adventofcode-featureflags-symfony
-    environment:
-      APP_ENV: prod
-      APP_DEBUG: 0
+    env_file:
+      - .env.docker
     healthcheck:
       test: curl --fail http://localhost/ping || exit 1
       interval: 30s

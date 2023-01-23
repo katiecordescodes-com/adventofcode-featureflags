@@ -1,0 +1,73 @@
+name: Deploy to production
+
+# Required secrets
+# DOCKERHUB_USER
+# DOCKERHUB_TOKEN
+# DEPLOY_PATH
+# SSH_HOST
+# SSH_USER
+# SSH_KEY
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DOCKER_COMPOSE_FILES: -f compose.yaml -f compose.prod.yaml -f compose.ssl.yaml
+  DOCKER_COMPOSE_FILES_LIST: "compose.yaml,compose.prod.yaml"
+  DOCKER_COMPOSE_PROJECT: katiecordescodes-adventofcode-featureflags
+  SERVICE_NAME: symfony
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build the environment file
+        uses: danielr1996/envsubst-action@1.0.0
+        with:
+          input: .env.docker
+          output: .env.docker
+
+      - name: Build the image(s)
+        run: docker compose -f compose.build.yaml build
+
+      - name: Log into Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push up the image(s)
+        run: docker compose -f compose.build.yaml push
+
+      - name: Copy up the deployment files
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".env.docker,.deploy/deploy-single.sh,${{ env.DOCKER_COMPOSE_FILES_LIST }}"
+          target: ${{ secrets.DEPLOY_PATH }}
+
+      - name: Deploy the application
+        uses: appleboy/ssh-action@master
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DOCKER_COMPOSE_PROJECT: ${{ env.DOCKER_COMPOSE_PROJECT }}
+          SERVICE_NAME: ${{ env.SERVICE_NAME }}
+          DOCKER_COMPOSE_FILES: ${{ env.DOCKER_COMPOSE_FILES }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: DEPLOY_PATH,DOCKER_COMPOSE_PROJECT,SERVICE_NAME,DOCKER_COMPOSE_FILES
+          script: |
+            cd $DEPLOY_PATH
+            chmod +x $DEPLOY_PATH/.deploy/deploy-single.sh
+            $DEPLOY_PATH/.deploy/deploy-single.sh $DOCKER_COMPOSE_PROJECT $SERVICE_NAME "$DOCKER_COMPOSE_FILES"
