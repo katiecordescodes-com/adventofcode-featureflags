@@ -1,0 +1,81 @@
+name: Run Tests on PRs
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build the environment file
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          SPLIT_SYNC_APIKEY: ${{ secrets.SPLIT_SYNC_APIKEY }}
+        with:
+          input: .env.docker.dist
+          output: .env.docker
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2.1'
+          extensions: curl, mbstring
+          ini-values: memory_limit=-1, date.timezone='UTC'
+          coverage: xdebug
+          tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
+
+      - name: Run server for testing
+        run: docker compose -f compose.yaml -f compose.test.yaml up -d
+
+      - name: Wait for server startup
+        run: sleep 10
+
+      - name: Run api tests
+        run: php vendor/bin/codecept run Api --env ci
+
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build the environment file
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          SPLIT_SYNC_APIKEY: ${{ secrets.SPLIT_SYNC_APIKEY }}
+        with:
+          input: .env.docker.dist
+          output: .env.docker
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2.1'
+          extensions: curl, mbstring
+          ini-values: memory_limit=-1, date.timezone='UTC'
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
+
+      - name: Run unit tests
+        run: php vendor/bin/codecept run unit --coverage
