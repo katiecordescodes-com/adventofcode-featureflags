@@ -1,7 +1,26 @@
 services:
   symfony:
-    image: kcordes/katiecordescodes-adventofcode-featureflags-symfony
+    volumes:
+      - ./bin:/var/app/bin
+      - ./config:/var/app/config
+      - ./public:/var/app/public
+      - ./src:/var/app/src
+      - ./var:/var/app/var
+      - ./vendor:/var/app/vendor
+      - ./.env:/var/app/.env
+      - ./.docker/.unit.conf.json.dev:/docker-entrypoint.d/.unit.conf.json
+      - ./composer.json:/var/app/composer.json
+      - ./composer.lock:/var/app/composer.lock
+      - ./symfony.lock:/var/app/symfony.lock
     env_file:
       - .env.docker
     ports:
       - 8081:80
+
+  redis:
+    env_file:
+      - .env.docker
+
+  splitio:
+    env_file:
+      - .env.docker

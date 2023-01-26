@@ -1,4 +1,6 @@
 {
+    "name": "katiecordescodes/adventofcode-featureflags",
+    "description": "Microservice that provides feature flag functionality",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -15,6 +17,11 @@
         "symfony/yaml": "6.2.*"
     },
     "require-dev": {
+        "codeception/codeception": "^5.0",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-phpbrowser": "^3.0",
+        "codeception/module-rest": "^3.3",
+        "codeception/module-symfony": "^3.1"
     },
     "config": {
         "allow-plugins": {

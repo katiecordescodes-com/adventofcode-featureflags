@@ -1,0 +1,15 @@
+actor: ApiTester
+suite_namespace: App\Tests\Api
+modules:
+    enabled:
+        - REST:
+            url: http://featureflags.adventofcode.katiecordescodes.docker
+            depends: PhpBrowser
+            part: Json
+
+env:
+    ci:
+        modules:
+            config:
+                REST:
+                    url: http://localhost:8081

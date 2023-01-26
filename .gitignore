@@ -14,3 +14,9 @@
 
 # Misc
 my.secrets
+.env.docker
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
