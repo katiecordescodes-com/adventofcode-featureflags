@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
 
+      - name: debugging
+        run: ls -lah var
+
       - name: Run server for testing
         run: docker compose -f compose.yaml -f compose.test.yaml up -d
 
@@ -45,6 +48,9 @@ jobs:
 
       - name: Run api tests
         run: php vendor/bin/codecept run Api --env ci
+
+      - name: Shut down server
+        run: docker compose -f compose.yaml -f compose.test.yaml down
 
   unit-tests:
     runs-on: ubuntu-latest

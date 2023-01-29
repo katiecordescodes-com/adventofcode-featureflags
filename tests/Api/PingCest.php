@@ -11,6 +11,6 @@ class PingCest
         $I->sendGet('/v1/ping');
 
         $I->seeResponseCodeIsSuccessful();
-        $I->seeResponseEquals('');
+        $I->seeResponseEquals('""');
     }
 }
