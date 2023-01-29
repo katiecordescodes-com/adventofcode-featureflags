@@ -22,3 +22,23 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Application\UseCase\IsFeatureFlagEnabledInterface: '@App\Application\UseCase\IsFeatureFlagEnabled'
+
+    SplitIO\Sdk\Factory\SplitFactoryInterface:
+        factory: ['SplitIO\Sdk', 'factory']
+        arguments:
+            $apiKey: '%env(resolve:SPLIT_SYNC_APIKEY)%'
+            $options:
+                cache:
+                    adapter: 'predis'
+                    parameters:
+                        scheme: 'tcp'
+                        host: 'redis'
+                        port: '6379'
+                        timeout: 881
+                    options:
+                        prefix: ''
+                log:
+                    adapter: syslog
+                    level: debug

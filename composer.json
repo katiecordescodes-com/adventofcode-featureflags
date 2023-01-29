@@ -9,6 +9,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "splitsoftware/split-sdk-php": "^7.1",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2",
@@ -21,7 +22,8 @@
         "codeception/module-asserts": "^3.0",
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.3",
-        "codeception/module-symfony": "^3.1"
+        "codeception/module-symfony": "^3.1",
+        "codeception/verify": "^2.2"
     },
     "config": {
         "allow-plugins": {

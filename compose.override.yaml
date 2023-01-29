@@ -1,5 +1,7 @@
 services:
   symfony:
+    env_file:
+      - .env.local
     volumes:
       - ./bin:/var/app/bin
       - ./config:/var/app/config
