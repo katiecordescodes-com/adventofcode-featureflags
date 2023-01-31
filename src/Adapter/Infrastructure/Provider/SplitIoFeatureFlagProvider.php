@@ -10,11 +10,12 @@ use SplitIO\Sdk\Factory\SplitFactoryInterface;
 class SplitIoFeatureFlagProvider implements FeatureFlagProviderInterface
 {
     private ClientInterface $splitIoClient;
-    private string $splitIoTrafficKey;
 
     public function __construct(SplitFactoryInterface $splitIoFactory)
     {
         $this->splitIoClient = $splitIoFactory->client();
+        print_r($splitIoFactory->manager()->splits());
+        print_r(substr($_ENV['SPLIT_SYNC_APIKEY'], 0, 5));
     }
 
     /**
