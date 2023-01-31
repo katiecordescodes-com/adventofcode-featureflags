@@ -23,8 +23,6 @@ jobs:
           input: .env.docker.dist
           output: .env.docker
 
-      - run: cat .env.docker
-
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -58,15 +56,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Build the environment file
-        uses: danielr1996/envsubst-action@1.0.0
-        env:
-          APP_SECRET: ${{ secrets.APP_SECRET }}
-          SPLIT_SYNC_APIKEY: ${{ secrets.SPLIT_SYNC_APIKEY }}
-        with:
-          input: .env.docker.dist
-          output: .env.docker
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
