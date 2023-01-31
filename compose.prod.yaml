@@ -12,6 +12,7 @@ services:
       katiecordescodes-adventofcode:
         aliases:
           - featureflags
+      default:
 
   redis:
     env_file:
