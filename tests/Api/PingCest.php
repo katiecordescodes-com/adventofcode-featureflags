@@ -6,11 +6,11 @@ use App\Tests\ApiTester;
 
 class PingCest
 {
-    public function getPingReturnsSuccess(ApiTester $I): void
+    public function getPingShouldReturnSuccessful(ApiTester $I): void
     {
-        $I->sendGet('/ping');
+        $I->sendGet('/v1/ping');
 
         $I->seeResponseCodeIsSuccessful();
-        $I->seeResponseEquals('');
+        $I->seeResponseEquals('""');
     }
 }

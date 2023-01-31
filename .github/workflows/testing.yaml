@@ -8,6 +8,7 @@ on:
 jobs:
   api-tests:
     runs-on: ubuntu-latest
+    environment: Test
 
     steps:
       - name: Checkout code
@@ -46,21 +47,15 @@ jobs:
       - name: Run api tests
         run: php vendor/bin/codecept run Api --env ci
 
+      - name: Shut down server
+        run: docker compose -f compose.yaml -f compose.test.yaml down
+
   unit-tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Build the environment file
-        uses: danielr1996/envsubst-action@1.0.0
-        env:
-          APP_SECRET: ${{ secrets.APP_SECRET }}
-          SPLIT_SYNC_APIKEY: ${{ secrets.SPLIT_SYNC_APIKEY }}
-        with:
-          input: .env.docker.dist
-          output: .env.docker
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -78,4 +73,4 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-interaction --no-suggest
 
       - name: Run unit tests
-        run: php vendor/bin/codecept run unit --coverage
+        run: php vendor/bin/codecept run Unit --coverage
