@@ -22,6 +22,8 @@ jobs:
           input: .env.docker.dist
           output: .env.docker
 
+      - run: cat .env.docker
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
