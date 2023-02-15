@@ -3,9 +3,8 @@
 
 namespace App\Tests\Unit\Adapter\Infrastructure\Provider;
 
-use App\Adapter\Infrastructure\Provider\SplitIoFeatureFlagProvider;
+use App\Adapter\Infrastructure\Service\SplitIoFeatureFlagService;
 use App\Application\Common\Exception\NotFoundException;
-use App\Tests\UnitTester;
 use Codeception\Stub;
 use Codeception\Test\Unit;
 use Codeception\Verify\Verify;
@@ -16,8 +15,6 @@ use Throwable;
 
 class SplitIoFeatureFlagProviderTest extends Unit
 {
-
-    protected UnitTester $tester;
 
     /**
      * @return void
@@ -35,7 +32,7 @@ class SplitIoFeatureFlagProviderTest extends Unit
             'client' => $mockSplitIoClient,
         ]);
 
-        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagProvider($mockSplitIoFactory);
+        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagService($mockSplitIoFactory);
 
         $resultFlag = $splitIoFeatureFlagProvider->getFeatureFlagById('test_flag');
 
@@ -61,7 +58,7 @@ class SplitIoFeatureFlagProviderTest extends Unit
             'client' => $mockSplitIoClient,
         ]);
 
-        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagProvider($mockSplitIoFactory);
+        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagService($mockSplitIoFactory);
 
         $resultFlag = $splitIoFeatureFlagProvider->getFeatureFlagById('test_flag');
 
@@ -88,7 +85,7 @@ class SplitIoFeatureFlagProviderTest extends Unit
             'client' => $mockSplitIoClient,
         ]);
 
-        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagProvider($mockSplitIoFactory);
+        $splitIoFeatureFlagProvider = new SplitIoFeatureFlagService($mockSplitIoFactory);
 
         Verify::Callable(function () use ($splitIoFeatureFlagProvider) {
             $splitIoFeatureFlagProvider->getFeatureFlagById('test_flag');

@@ -4,15 +4,14 @@
 namespace App\Tests\Unit\Domain;
 
 use App\Domain\FeatureFlag;
-use App\Tests\UnitTester;
 use Codeception\Test\Unit;
 
 class FeatureFlagTest extends Unit
 {
-
-    protected UnitTester $tester;
-
-    public function test_FeatureFlag_constructor_sets_data()
+    /**
+     * @return void
+     */
+    public function test_FeatureFlag_constructor_sets_data(): void
     {
         $featureFlag = new FeatureFlag('test_flag', true);
 
@@ -20,7 +19,10 @@ class FeatureFlagTest extends Unit
         expect($featureFlag->isEnabled())->toBeTrue();
     }
 
-    public function test_FeatureFlag_setName_sets_name()
+    /**
+     * @return void
+     */
+    public function test_FeatureFlag_setName_sets_name(): void
     {
         $featureFlag = new FeatureFlag('test_flag', true);
 
@@ -29,7 +31,10 @@ class FeatureFlagTest extends Unit
         expect($featureFlag->getId())->toEqual('new_id');
     }
 
-    public function test_FeatureFlag_setEnabled_sets_enabled()
+    /**
+     * @return void
+     */
+    public function test_FeatureFlag_setEnabled_sets_enabled(): void
     {
         $featureFlag = new FeatureFlag('test_flag', true);
 

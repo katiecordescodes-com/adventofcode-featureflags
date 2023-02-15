@@ -23,7 +23,14 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\Application\UseCase\IsFeatureFlagEnabledInterface: '@App\Application\UseCase\IsFeatureFlagEnabled'
+    app.application.interactor.isfeatureflagenabled.json:
+        class: App\Application\Interactor\IsFeatureFlagEnabled\IsFeatureFlagEnabledInteractor
+        arguments:
+            $outputPort: '@App\Adapter\Presentation\Presenter\IsFeatureFlagEnabledJsonPresenter'
+
+    App\Adapter\Presentation\Controller\v1\FeatureFlags\EnabledController:
+        arguments:
+            $interactor: '@app.application.interactor.isfeatureflagenabled.json'
 
     SplitIO\Sdk\Factory\SplitFactoryInterface:
         factory: ['SplitIO\Sdk', 'factory']
