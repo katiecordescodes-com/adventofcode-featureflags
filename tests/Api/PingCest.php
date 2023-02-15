@@ -4,9 +4,17 @@ namespace App\Tests\Api;
 
 use App\Tests\ApiTester;
 
+/** @noinspection PhpUnused */
 class PingCest
 {
-    public function getPingShouldReturnSuccessful(ApiTester $I): void
+
+    /**
+     * @param ApiTester $I
+     * @return void
+     *
+     * @noinspection PhpUnused
+     */
+    public function get_ping_should_return_successful(ApiTester $I): void
     {
         $I->sendGet('/v1/ping');
 
